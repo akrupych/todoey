@@ -5,20 +5,19 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: TasksScreen(),
+      theme: ThemeData.light().copyWith(
+        canvasColor: Colors.transparent,
+      ),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
 class TasksScreen extends StatelessWidget {
-  const TasksScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +28,11 @@ class TasksScreen extends StatelessWidget {
           child: Icon(Icons.add),
           backgroundColor: Colors.green,
           onPressed: () {
-            // todo add item
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              builder: (context) => BottomSheet(),
+            );
           },
         ),
       ),
@@ -104,6 +107,46 @@ class ListItem extends StatelessWidget {
       trailing: Checkbox(
         value: false,
         onChanged: (checked) {},
+      ),
+    );
+  }
+}
+
+class BottomSheet extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: 30,
+          right: 30,
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: Container(
+          padding: EdgeInsets.all(30),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextField(
+                autofocus: true,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Text("Add TODO"),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
