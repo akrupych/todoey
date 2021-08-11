@@ -99,14 +99,30 @@ class TasksScreen extends StatelessWidget {
   }
 }
 
-class ListItem extends StatelessWidget {
+class ListItem extends StatefulWidget {
+  @override
+  _ListItemState createState() => _ListItemState();
+}
+
+class _ListItemState extends State<ListItem> {
+  bool done = false;
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text("Task Title"),
+      title: Text(
+        "Add your first task",
+        style: TextStyle(
+          decoration: done ? TextDecoration.lineThrough : null,
+        ),
+      ),
       trailing: Checkbox(
-        value: false,
-        onChanged: (checked) {},
+        value: done,
+        onChanged: (checked) {
+          setState(() {
+            done = checked ?? false;
+          });
+        },
       ),
     );
   }
