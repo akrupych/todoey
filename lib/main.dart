@@ -23,6 +23,16 @@ class TasksScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.greenAccent,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(right: 30),
+        child: FloatingActionButton(
+          child: Icon(Icons.add),
+          backgroundColor: Colors.green,
+          onPressed: () {
+            // todo add item
+          },
+        ),
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
