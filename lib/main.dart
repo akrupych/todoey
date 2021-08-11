@@ -74,16 +74,36 @@ class TasksScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
-                      )),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                  ),
+                  padding: EdgeInsets.all(20),
+                  child: ListView(
+                    children: [
+                      ListItem(),
+                    ],
+                  ),
                 ),
               ),
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ListItem extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text("Task Title"),
+      trailing: Checkbox(
+        value: false,
+        onChanged: (checked) {},
       ),
     );
   }
