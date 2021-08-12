@@ -4,8 +4,13 @@ class ListItem extends StatelessWidget {
   final String text;
   final bool done;
   final Function(bool) onChanged;
+  final Function() onLongPress;
 
-  ListItem({required this.text, required this.done, required this.onChanged});
+  ListItem(
+      {required this.text,
+      required this.done,
+      required this.onChanged,
+      required this.onLongPress});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +25,7 @@ class ListItem extends StatelessWidget {
         value: done,
         onChanged: (checked) => onChanged(checked ?? false),
       ),
+      onLongPress: onLongPress,
     );
   }
 }

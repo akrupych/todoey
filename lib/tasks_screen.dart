@@ -5,17 +5,26 @@ import 'package:todoey/list_item.dart';
 import 'package:todoey/task.dart';
 
 class TasksData extends ChangeNotifier {
-  final List<Task> tasks = [
+  final List<Task> _tasks = [
     Task(text: "Add your first task"),
   ];
 
-  add(String task) {
-    tasks.add(Task(text: task));
+  Task getTask(int i) => _tasks[i];
+
+  int get tasksCount => _tasks.length;
+
+  add(String taskText) {
+    _tasks.add(Task(text: taskText));
     notifyListeners();
   }
 
-  setDone(Task task, bool done) {
-    task.done = done;
+  setDone(int i, bool done) {
+    _tasks[i].done = done;
+    notifyListeners();
+  }
+
+  delete(int i) {
+    _tasks.removeAt(i);
     notifyListeners();
   }
 }
@@ -74,7 +83,7 @@ class TasksScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 30, bottom: 30),
                   child: Text(
-                    "${data.tasks.length} Tasks",
+                    "${data.tasksCount} Tasks",
                     style: TextStyle(
                       color: Colors.white,
                     ),
@@ -94,13 +103,15 @@ class TasksScreen extends StatelessWidget {
                       padding: EdgeInsets.all(20),
                       child: ListView.builder(
                         itemBuilder: (context, i) {
-                          Task task = data.tasks[i];
+                          Task task = data.getTask(i);
                           return ListItem(
-                              text: task.text,
-                              done: task.done,
-                              onChanged: (done) => data.setDone(task, done));
+                            text: task.text,
+                            done: task.done,
+                            onChanged: (done) => data.setDone(i, done),
+                            onLongPress: () => data.delete(i),
+                          );
                         },
-                        itemCount: data.tasks.length,
+                        itemCount: data.tasksCount,
                       ),
                     ),
                   ),
