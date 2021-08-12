@@ -82,7 +82,7 @@ class _TasksScreenState extends State<TasksScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 30, bottom: 30),
               child: Text(
-                "12 Tasks",
+                "${widget.tasks.length} Tasks",
                 style: TextStyle(
                   color: Colors.white,
                 ),
