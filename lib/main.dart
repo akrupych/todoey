@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:todoey/add_task_bottom_sheet.dart';
+import 'package:todoey/list_item.dart';
+import 'package:todoey/task.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,7 +20,16 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class TasksScreen extends StatelessWidget {
+class TasksScreen extends StatefulWidget {
+  final List<Task> tasks = [
+    Task(text: "Add your first task"),
+  ];
+
+  @override
+  _TasksScreenState createState() => _TasksScreenState();
+}
+
+class _TasksScreenState extends State<TasksScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,8 +43,12 @@ class TasksScreen extends StatelessWidget {
             showModalBottomSheet(
               context: context,
               isScrollControlled: true,
-              builder: (context) => BottomSheet(),
-            );
+              builder: (context) => AddTaskBottomSheet(),
+            ).then((taskText) {
+              setState(() {
+                widget.tasks.add(Task(text: taskText));
+              });
+            });
           },
         ),
       ),
@@ -84,84 +100,20 @@ class TasksScreen extends StatelessWidget {
                     ),
                   ),
                   padding: EdgeInsets.all(20),
-                  child: ListView(
-                    children: [
-                      ListItem(),
-                    ],
+                  child: ListView.builder(
+                    itemBuilder: (context, i) => ListItem(
+                      text: widget.tasks[i].text,
+                      done: widget.tasks[i].done,
+                      onChanged: (done) => setState(() {
+                        widget.tasks[i].done = done;
+                      }),
+                    ),
+                    itemCount: widget.tasks.length,
                   ),
                 ),
               ),
             )
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class ListItem extends StatefulWidget {
-  @override
-  _ListItemState createState() => _ListItemState();
-}
-
-class _ListItemState extends State<ListItem> {
-  bool done = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        "Add your first task",
-        style: TextStyle(
-          decoration: done ? TextDecoration.lineThrough : null,
-        ),
-      ),
-      trailing: Checkbox(
-        value: done,
-        onChanged: (checked) {
-          setState(() {
-            done = checked ?? false;
-          });
-        },
-      ),
-    );
-  }
-}
-
-class BottomSheet extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.only(
-          left: 30,
-          right: 30,
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        child: Container(
-          padding: EdgeInsets.all(30),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TextField(
-                autofocus: true,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text("Add TODO"),
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );
